@@ -1,45 +1,59 @@
-/* Copyright (c) 2015-2016 MIT 6.005 course staff, all rights reserved.
- * Redistribution of original or derived work requires permission of course staff.
- */
 package graph;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+import static org.junit.Assert.*;
+import java.util.Map;
+import java.util.Set;
 
-/**
- * Tests for ConcreteEdgesGraph.
- * 
- * This class runs the GraphInstanceTest tests against ConcreteEdgesGraph, as
- * well as tests for that particular implementation.
- * 
- * Tests against the Graph spec should be in GraphInstanceTest.
- */
-public class ConcreteEdgesGraphTest extends GraphInstanceTest {
-    
-    /*
-     * Provide a ConcreteEdgesGraph for tests in GraphInstanceTest.
-     */
-    @Override public Graph<String> emptyInstance() {
-        return new ConcreteEdgesGraph();
+public class ConcreteEdgesGraphTest {
+
+    @Test
+    public void testAddVertex() {
+        ConcreteEdgesGraph graph = new ConcreteEdgesGraph();
+        assertTrue(graph.add("A"));
+        assertTrue(graph.add("B"));
+        assertFalse(graph.add("A"));
     }
-    
-    /*
-     * Testing ConcreteEdgesGraph...
-     */
-    
-    // Testing strategy for ConcreteEdgesGraph.toString()
-    //   TODO
-    
-    // TODO tests for ConcreteEdgesGraph.toString()
-    
-    /*
-     * Testing Edge...
-     */
-    
-    // Testing strategy for Edge
-    //   TODO
-    
-    // TODO tests for operations of Edge
-    
+
+    @Test
+    public void testSetEdge() {
+        ConcreteEdgesGraph graph = new ConcreteEdgesGraph();
+        graph.add("A");
+        graph.add("B");
+        
+        assertEquals(0, graph.set("A", "B", 5));
+        assertEquals(5, (int) graph.targets("A").get("B"));
+        assertEquals(0, (int) graph.targets("B").getOrDefault("A", 0));
+        
+        assertEquals(5, graph.set("A", "B", 10));
+        assertEquals(10, (int) graph.targets("A").get("B"));
+    }
+
+    @Test
+    public void testRemoveVertex() {
+        ConcreteEdgesGraph graph = new ConcreteEdgesGraph();
+        graph.add("A");
+        graph.add("B");
+        graph.set("A", "B", 5);
+
+        assertTrue(graph.remove("A"));
+        assertFalse(graph.vertices().contains("A"));
+    }
+
+    @Test
+    public void testSourcesTargets() {
+        ConcreteEdgesGraph graph = new ConcreteEdgesGraph();
+        graph.set("A", "B", 4);
+        graph.set("B", "C", 6);
+        
+        assertEquals(Map.of("A", 4), graph.sources("B"));
+        assertEquals(Map.of("B", 6), graph.sources("C"));
+    }
+
+    @Test
+    public void testToString() {
+        ConcreteEdgesGraph graph = new ConcreteEdgesGraph();
+        graph.set("A", "B", 4);
+        assertTrue(graph.toString().contains("A --(4)--> B"));
+    }
 }

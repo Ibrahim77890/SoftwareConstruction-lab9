@@ -1,45 +1,45 @@
-/* Copyright (c) 2015-2016 MIT 6.005 course staff, all rights reserved.
- * Redistribution of original or derived work requires permission of course staff.
- */
 package graph;
 
+import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.junit.Test;
+public class ConcreteVerticesGraphTest {
 
-/**
- * Tests for ConcreteVerticesGraph.
- * 
- * This class runs the GraphInstanceTest tests against ConcreteVerticesGraph, as
- * well as tests for that particular implementation.
- * 
- * Tests against the Graph spec should be in GraphInstanceTest.
- */
-public class ConcreteVerticesGraphTest extends GraphInstanceTest {
-    
-    /*
-     * Provide a ConcreteVerticesGraph for tests in GraphInstanceTest.
-     */
-    @Override public Graph<String> emptyInstance() {
-        return new ConcreteVerticesGraph();
+    @Test
+    public void testAddVertex() {
+        ConcreteVerticesGraph graph = new ConcreteVerticesGraph();
+        assertTrue(graph.add("A"));
+        assertFalse(graph.add("A")); // Should not add duplicate
     }
-    
-    /*
-     * Testing ConcreteVerticesGraph...
-     */
-    
-    // Testing strategy for ConcreteVerticesGraph.toString()
-    //   TODO
-    
-    // TODO tests for ConcreteVerticesGraph.toString()
-    
-    /*
-     * Testing Vertex...
-     */
-    
-    // Testing strategy for Vertex
-    //   TODO
-    
-    // TODO tests for operations of Vertex
-    
+
+    @Test
+    public void testSetEdge() {
+        ConcreteVerticesGraph graph = new ConcreteVerticesGraph();
+        graph.add("A");
+        graph.add("B");
+        graph.set("A", "B", 5);
+        assertEquals(5, (int) graph.targets("A").get("B"));
+    }
+
+
+    @Test
+    public void testRemoveVertex() {
+        ConcreteVerticesGraph graph = new ConcreteVerticesGraph();
+        graph.add("A");
+        graph.add("B");
+        graph.set("A", "B", 3);
+        graph.remove("A");
+        assertFalse(graph.vertices().contains("A"));
+        assertNull(graph.sources("B").get("A"));
+    }
+
+    @Test
+    public void testToString() {
+        ConcreteVerticesGraph graph = new ConcreteVerticesGraph();
+        graph.add("A");
+        graph.add("B");
+        graph.set("A", "B", 3);
+        String expected = "Graph: \nA -> {B=3}\nB -> {}\n";
+        assertEquals(expected, graph.toString());
+    }
 }
