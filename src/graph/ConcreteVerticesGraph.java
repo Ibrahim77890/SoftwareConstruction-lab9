@@ -61,28 +61,39 @@ public class ConcreteVerticesGraph implements Graph<String> {
         Vertex sourceVertex = null;
         Vertex targetVertex = null;
         
-        // Find or create source and target vertices
+        // Find or create the source and target vertices
         for (Vertex v : vertices) {
             if (v.getLabel().equals(source)) {
                 sourceVertex = v;
-            } else if (v.getLabel().equals(target)) {
+            }
+            if (v.getLabel().equals(target)) {
                 targetVertex = v;
             }
         }
+
+        // If source vertex doesn't exist, create it and add to the graph
         if (sourceVertex == null) {
             sourceVertex = new Vertex(source);
             vertices.add(sourceVertex);
         }
+        
+        // If target vertex doesn't exist, create it and add to the graph
         if (targetVertex == null) {
             targetVertex = new Vertex(target);
             vertices.add(targetVertex);
         }
 
-        // Update edge weight
+        // Update the weight of the edge from source to target
         int previousWeight = sourceVertex.setTarget(target, weight);
+        
+        // Check representation invariant after the operation
         checkRep();
+        
+        // Return the previous weight (could be 0 if no previous edge existed)
         return previousWeight;
     }
+
+
 
     
     @Override
